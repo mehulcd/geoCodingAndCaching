@@ -1,0 +1,24 @@
+package com.ncr.location.handler;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ncr.location.model.ErrorResponse;
+
+@ControllerAdvice
+@RestController
+public class LocationExceptionHandler {
+
+	@ExceptionHandler(value = Exception.class)
+	@RequestMapping (produces = MediaType.APPLICATION_JSON_VALUE)
+	public ErrorResponse handleBaseException(Exception e) {  
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), e.getStackTrace().toString());  
+    }  
+
+}

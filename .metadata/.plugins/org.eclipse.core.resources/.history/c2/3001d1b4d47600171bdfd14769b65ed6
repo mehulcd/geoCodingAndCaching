@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package com.valbo.data.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * @author mdodia
+ *
+ */
+public class GoogleGeoCodeResponse {
+
+	public String status;
+
+	@JsonProperty("results")
+	public Results[] results;
+
+	public GoogleGeoCodeResponse() {
+	}
+
+	static class Results {
+		
+		public String formatted_address;
+		public geometry geometry;
+		public String[] types;
+		public address_component[] address_components;
+	}
+
+	static class geometry {
+		
+		public bounds bounds;
+		public String location_type;
+		public location location;
+		public bounds viewport;
+	}
+
+	static class bounds {
+
+		public location northeast;
+		public location southwest;
+	}
+
+	static class location {
+
+		public String lat;
+		public String lng;
+	}
+
+	static class address_component {
+		
+		public String long_name;
+		public String short_name;
+		public String[] types;
+	}
+}

@@ -1,0 +1,16 @@
+/**
+ * 
+ */
+package com.ncr.location.repository;
+
+import com.ncr.location.model.GeoLocationResponse;
+import com.ncr.location.model.GoogleGeoCodeResponse;
+
+/**
+ * @author mdodia
+ *
+ */
+public interface LocationRepository {
+	
+	GoogleGeoCodeResponse getLocationDetails (GeoLocationResponse location);
+}

@@ -1,0 +1,5 @@
+package com.ncr.location.model;
+
+public class ErrorResponse {
+
+}

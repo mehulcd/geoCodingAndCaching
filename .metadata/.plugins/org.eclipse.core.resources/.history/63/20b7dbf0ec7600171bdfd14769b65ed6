@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package com.ncr.location;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * @author mdodia
+ *
+ */
+@SpringBootApplication
+public class GeoCodingAPIMain {
+
+	public static void main(String[] args) {
+		SpringApplication.run(GeoCodingAPIMain.class, args);
+	}
+
+}

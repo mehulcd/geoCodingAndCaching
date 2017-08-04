@@ -1,0 +1,80 @@
+/**
+ * 
+ */
+package com.valbo.data.service;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valbo.data.model.Record;
+
+/**
+ * @author mdodia
+ *
+ */
+@Service
+public class AddressService {
+
+	@Value("${google.geocode.key}")
+	private String googleGeoCodeKey;
+
+	@Value("${google.geocode.url}")
+	private String googleGeoCodeURL;
+
+	public Record getGEOCodedAddress(List<String> geoCodes) {
+
+		Record record = new Record();
+		String geoCodeURI = geoCodes.get("latitude") + ","
+				+ geoCodes.get("longitude");
+		String uri = googleGeoCodeURL + "?" + "latlng=" + geoCodeURI + "&" + "key=" + googleGeoCodeKey;
+		return callService (uri, record);
+	}
+	
+	public Record getGEOCodedAddress(Record record) {
+
+		String addrLine1 = record.getAddrLine1().replaceAll(" ", "+");
+		String addressURL = addrLine1 + ","
+				+ record.getCity() + "," + record.getState();
+		String uri = googleGeoCodeURL + "?" + "address=" + addressURL + "&" + "key=" + googleGeoCodeKey;
+		return callService (uri, record);
+
+	}
+	
+	@SuppressWarnings("finally")
+	private Record callService (String url, Record record) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+
+		String response = restTemplate.getForObject(url, String.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			JsonNode root = objectMapper.readTree(response);
+			if (root != null && "OK".equals(root.get("status").asText())) {
+				JsonNode results = root.path("results");
+				Iterator<JsonNode> elements = results.elements();
+				while (elements.hasNext()) {
+					JsonNode temp = elements.next();
+					JsonNode location = temp.path("geometry").get("location");
+					record.setLatitude(location.get("lat").toString());
+					record.setLongitude(location.get("lng").toString());
+					System.out.format("Latitude & Longitude : %s %s", record.getLatitude(), record.getLongitude());
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			return record;
+		}
+		
+	}
+
+}

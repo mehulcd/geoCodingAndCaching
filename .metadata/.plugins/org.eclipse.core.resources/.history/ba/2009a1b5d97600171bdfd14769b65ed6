@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package com.valbo.data.service;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valbo.data.model.GeoLocationResponse;
+import com.valbo.data.model.GoogleGeoCodeResponse;
+import com.valbo.data.model.Location;
+
+/**
+ * @author mdodia
+ *
+ */
+@Service
+public class AddressService {
+
+	@Value("${google.geocode.key}")
+	private String googleGeoCodeKey;
+
+	@Value("${google.geocode.url}")
+	private String googleGeoCodeURI;
+
+	public GoogleGeoCodeResponse getGEOCodedAddress(List<String> geoCodes) {
+
+		String coordinates = geoCodes.get(0) + ","
+				+ geoCodes.get(1);
+
+		MultiValueMap<String, String> uriParams = new LinkedMultiValueMap<String, String>();
+		uriParams.add("latlng", coordinates);
+		uriParams.add("key", googleGeoCodeKey);
+		
+		UriComponentsBuilder uri = UriComponentsBuilder.fromUriString(googleGeoCodeURI).queryParams(uriParams);
+		return getGeoLocationFromAPI (uri.toUriString());
+	}
+	
+	public GeoLocationResponse getGEOLocationResponse (List<String> geoCodes) {
+		
+		GoogleGeoCodeResponse response = this.getGEOCodedAddress (geoCodes);
+		
+		GeoLocationResponse formattedResponse = new GeoLocationResponse();
+		for (GoogleGeoCodeResponse.Results result : response.results) {
+			if (null != result.geometry && "ROOF_TYPE".equals(result.geometry.location_type)) {
+				formattedResponse.result[0] = 
+			}
+		}
+	}
+
+	private GoogleGeoCodeResponse getGeoLocationFromAPI (String url) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		GoogleGeoCodeResponse response = restTemplate.getForObject(url, GoogleGeoCodeResponse.class);
+		return response;
+	}
+
+}

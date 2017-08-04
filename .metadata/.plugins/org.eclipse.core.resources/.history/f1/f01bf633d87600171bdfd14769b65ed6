@@ -1,0 +1,5 @@
+package com.valbo.data.model;
+
+public class GeoLocationResponse extends GoogleGeoCodeResponse {
+
+}

@@ -1,0 +1,5 @@
+package com.ncr.location.config;
+
+public class SHA1KeyGenerator {
+
+}

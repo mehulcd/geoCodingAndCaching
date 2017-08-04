@@ -1,0 +1,5 @@
+package com.ncr.location.test;
+
+public class GeoCodingAPITestRunner {
+
+}

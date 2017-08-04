@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package com.valbo.data.model;
+
+/**
+ * @author mdodia
+ *
+ */
+public class GeoCodeResponse {
+
+}

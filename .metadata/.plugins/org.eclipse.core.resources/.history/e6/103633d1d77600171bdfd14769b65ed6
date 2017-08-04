@@ -1,0 +1,58 @@
+package com.valbo.data.model;
+
+public class GeoLocationResponse {
+
+	private String latitude;
+	private String longitude;
+	private String address;
+	private String matchType;
+	/**
+	 * @return the latitude
+	 */
+	public String getLatitude() {
+		return latitude;
+	}
+	/**
+	 * @param latitude the latitude to set
+	 */
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	/**
+	 * @return the longitude
+	 */
+	public String getLongitude() {
+		return longitude;
+	}
+	/**
+	 * @param longitude the longitude to set
+	 */
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	/**
+	 * @return the matchType
+	 */
+	public String getMatchType() {
+		return matchType;
+	}
+	/**
+	 * @param matchType the matchType to set
+	 */
+	public void setMatchType(String matchType) {
+		this.matchType = matchType;
+	}
+
+}

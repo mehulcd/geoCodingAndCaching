@@ -1,0 +1,37 @@
+/**
+ * 
+ */
+package com.ncr.location.repository.test;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.Assert;
+
+import com.ncr.location.model.GeoLocationResponse;
+import com.ncr.location.model.GoogleGeoCodeResponse;
+import com.ncr.location.repository.LocationRepository;
+
+/**
+ * @author mdodia
+ *
+ */
+@RunWith(SpringRunner.class)
+public class LocationRepositoryTest {
+ 
+    @Autowired
+    private LocationRepository locationRepositoryImpl;
+ 
+    @Test
+    public void testNCRLocationAddress() {
+    	
+    	GeoLocationResponse response = new GeoLocationResponse();
+    	response.setLatitude("33.969601");
+    	response.setLongitude("-84.100033");
+    	
+    	GoogleGeoCodeResponse testResponse = locationRepositoryImpl.getLocationDetails(response);
+    	Assert.notNull(testResponse, "Response sent from GeoCoding service is null");
+    }
+	
+}

@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package com.ncr.location.repository;
+
+import com.ncr.location.model.GeoLocationResponse;
+
+/**
+ * @author mdodia
+ *
+ */
+public class LocationRepositoryImpl implements LocationRepository {
+
+	/* (non-Javadoc)
+	 * @see com.ncr.location.repository.LocationRepository#saveLocation(com.ncr.location.model.GeoLocationResponse)
+	 */
+	@Override
+	public void saveLocation(GeoLocationResponse location) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

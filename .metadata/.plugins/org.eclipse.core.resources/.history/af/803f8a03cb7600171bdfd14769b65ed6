@@ -1,0 +1,220 @@
+/**
+ * 
+ */
+package com.valbo.data;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.PropertyAccessor;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.valbo.data.model.AllRecordsMapper;
+import com.valbo.data.model.Record;
+import com.valbo.data.service.AddressService;
+
+/**
+ * @author mdodia
+ *
+ */
+@Service
+public class FileGenerationService {
+
+	private static int recordCount = 0;
+
+	@Autowired
+	private AllRecordsMapper allRecordsMapper;
+
+	@Autowired
+	private AddressService addressService;
+
+	@Value("${file.location}")
+	private String file;
+
+	private static Map<String, Integer> seqMap = new HashMap<String, Integer>();
+
+	@Autowired
+	private Environment env;
+
+	public void loadData() {
+
+		Workbook workbook;
+		FileInputStream inputStream;
+
+		try {
+			inputStream = new FileInputStream(new File(file));
+			workbook = new XSSFWorkbook(inputStream);
+
+			Sheet firstSheet = workbook.getSheetAt(0);
+			Iterator<Row> iterator = firstSheet.iterator();
+
+			Row header = iterator.next();
+			populateHeaderAttributes(header);
+			
+			//while (iterator.hasNext()) {
+				Record record = new Record();
+				populateRowAttributes(iterator.next(), record);
+				
+				//record = addressService.getGEOCodedAddress(record);
+
+				if (StringUtils.isEmpty(record.getLatitude())) {
+
+					String addressLine = "";
+					if (!StringUtils.isEmpty(record.getAddrLine1())) {
+						addressLine = record.getAddrLine1();
+					} else if (!StringUtils.isEmpty(record.getIndex())) {
+						addressLine = record.getIndex();
+					} else if (!StringUtils.isEmpty(record.getComplex())) {
+						addressLine = record.getComplex();
+					}
+
+					String appender = addressLine + "," + record.getCity() + "," + record.getState();
+					record.setLocationId(getSHA1(appender));
+					System.out.println("Using address to compute key as no co-ordinates were found");
+					System.out.println(appender);
+				} else {
+					record.setLocationId(getSHA1(record.getLatitude(), record.getLongitude()));
+				}
+				
+//				allRecordsMapper.insertData(record);
+				
+			//}
+			
+			workbook.close();
+			inputStream.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+	}
+
+	public void populateHeaderAttributes(Row headerRow) {
+
+		Iterator<Cell> cellIterator = headerRow.cellIterator();
+		while (cellIterator.hasNext()) {
+
+			Cell cell = cellIterator.next();
+			System.out.println(cell.getStringCellValue());
+			seqMap.put(cell.getStringCellValue(), cell.getColumnIndex());
+		}
+	}
+
+	public void populateRowAttributes(Row row, Record record) {
+
+		Iterator<Cell> cellIterator = row.cellIterator();
+
+		while (cellIterator.hasNext()) {
+
+			Cell cell = cellIterator.next();
+			PropertyAccessor myAccessor;
+			switch (cell.getCellType()) {
+
+			case Cell.CELL_TYPE_STRING:
+
+				String value = cell.getStringCellValue();
+
+				myAccessor = PropertyAccessorFactory.forBeanPropertyAccess(record);
+				int stringIndex = cell.getColumnIndex();
+				String attribute1 = env.getProperty(String.valueOf(stringIndex));
+				myAccessor.setPropertyValue(attribute1, value);
+
+//				System.out.println("STRING INDEX :" + stringIndex);
+//				System.out.println(value);
+				break;
+			case Cell.CELL_TYPE_NUMERIC:
+
+				int intIndex = cell.getColumnIndex();
+				if (intIndex == 53) {
+					Date listDate = cell.getDateCellValue();
+					String attribute2 = env.getProperty(String.valueOf(intIndex));
+					myAccessor = PropertyAccessorFactory.forBeanPropertyAccess(record);
+					myAccessor.setPropertyValue(attribute2, listDate);
+//					System.out.println(intIndex);
+//					System.out.println(listDate);
+				} else {
+					double intValue = cell.getNumericCellValue();
+					String attribute2 = env.getProperty(String.valueOf(intIndex));
+					myAccessor = PropertyAccessorFactory.forBeanPropertyAccess(record);
+					myAccessor.setPropertyValue(attribute2, String.valueOf(intValue));
+//					System.out.println("INT INDEX :" + intIndex);
+//					System.out.println(intValue);
+				}
+				break;
+
+			default:
+				System.out.println("**************** DEFAULT *******************");
+				System.out.println("DEFAULT column index :" +cell.getColumnIndex());
+				System.out.println("DEFAULT cell type :" +cell.getCellType());
+				System.out.println("DEFAULT row index :" +cell.getRowIndex());
+				break;
+			}
+
+		}
+		System.out.println("Row count : " + row.getRowNum());
+
+	}
+
+	public static String getSHA1(String latitude, String longitude) {
+
+		MessageDigest md = null;
+		String resp = "";
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+			byte[] arr = (md.digest((latitude + "," + longitude).getBytes("UTF-8")));
+			resp = DatatypeConverter.printHexBinary(arr);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return resp;
+
+	}
+
+	public static String getSHA1(String address) {
+
+		MessageDigest md = null;
+		String resp = "";
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+			byte[] arr = (md.digest((address).getBytes("UTF-8")));
+			resp = DatatypeConverter.printHexBinary(arr);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resp;
+	}
+
+}

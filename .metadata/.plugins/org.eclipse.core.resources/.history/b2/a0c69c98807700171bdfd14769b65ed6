@@ -1,0 +1,116 @@
+package com.ncr.location.model;
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class GeoLocationResponse {
+
+	private String address;
+	private String[] addressType;
+	private String latitude;
+	private String longitude;
+	private String matchType;
+	private String lookUpTimeStamp;
+	
+	@JsonIgnore
+	private Date timestamp;
+	
+	/**
+	 * @return the timestamp
+	 */
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	/**
+	 * @param lookUpTimeStamp the lookUpTimeStamp to set
+	 */
+	public void setLookUpTimeStamp(String lookUpTimeStamp) {
+		this.lookUpTimeStamp = lookUpTimeStamp;
+	}
+	
+	/**
+	 * @return the loopUpTimeStamp
+	 */
+	public String getLookUpTimeStamp() {
+		return lookUpTimeStamp;
+	}
+	/**
+	 * @param loopUpTimeStamp the loopUpTimeStamp to set
+	 */
+	public void setLookUpTimeStamp(Date loopUpTimeStamp) {
+		this.lookUpTimeStamp = loopUpTimeStamp.toString();
+	}
+	/**
+	 * @return the latitude
+	 */
+	public String getLatitude() {
+		return latitude;
+	}
+	/**
+	 * @param latitude the latitude to set
+	 */
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	/**
+	 * @return the longitude
+	 */
+	public String getLongitude() {
+		return longitude;
+	}
+	/**
+	 * @param longitude the longitude to set
+	 */
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	/**
+	 * @return the matchType
+	 */
+	public String getMatchType() {
+		return matchType;
+	}
+	/**
+	 * @param matchType the matchType to set
+	 */
+	public void setMatchType(String matchType) {
+		this.matchType = matchType;
+	}
+	/**
+	 * @return the addressType
+	 */
+	public String[] getAddressType() {
+		return addressType;
+	}
+	/**
+	 * @param addressType the addressType to set
+	 */
+	public void setAddressType(String[] addressType) {
+		
+		if (null == addressType) {
+			addressType = new String[]{"Unknown"};
+		}
+		this.addressType = addressType;
+	}
+
+}

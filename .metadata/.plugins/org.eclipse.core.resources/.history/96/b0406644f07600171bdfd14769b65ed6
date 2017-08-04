@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package com.ncr.location.repository;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.ncr.location.model.GeoLocationResponse;
+import com.ncr.location.model.GoogleGeoCodeResponse;
+
+/**
+ * @author mdodia
+ *
+ */
+@Component
+public class LocationRepositoryImpl implements LocationRepository {
+
+	@Value("${google.geocode.key}")
+	private String googleGeoCodeKey;
+
+	@Value("${google.geocode.url}")
+	private String googleGeoCodeURI;
+	
+	
+	@Override
+	public GoogleGeoCodeResponse getLocationDetails(GeoLocationResponse location) {
+		
+		String coordinates = location.getLatitude() + "," + location.getLongitude();
+
+		MultiValueMap<String, String> uriParams = new LinkedMultiValueMap<String, String>();
+		uriParams.add("latlng", coordinates);
+		uriParams.add("key", googleGeoCodeKey);
+
+		UriComponentsBuilder uri = UriComponentsBuilder.fromUriString(googleGeoCodeURI).queryParams(uriParams);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		GoogleGeoCodeResponse response = restTemplate.getForObject(uri.toUriString(), GoogleGeoCodeResponse.class);
+		
+		return response;
+		
+	}
+
+
+
+}

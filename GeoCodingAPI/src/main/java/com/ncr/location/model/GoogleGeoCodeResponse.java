@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package com.ncr.location.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * @author mdodia
+ *
+ */
+public class GoogleGeoCodeResponse {
+
+	public String status;
+
+	@JsonProperty("results")
+	public Results[] results;
+
+	public GoogleGeoCodeResponse() {
+	}
+
+	public static class Results {
+		
+		public String formatted_address;
+		@JsonProperty("geometry")
+		public Geometry geometry;
+		public String[] types;
+		public AddressComponent[] address_components;
+	}
+
+	public static class Geometry {
+		
+		@JsonProperty("bounds")
+		public Bounds bounds;
+		public String location_type;
+		@JsonProperty("location")
+		public Location location;
+		public Bounds viewport;
+	}
+
+	public static class Bounds {
+
+		public Location northeast;
+		public Location southwest;
+	}
+
+	public static class Location {
+
+		public String lat;
+		public String lng;
+	}
+
+	public static class AddressComponent {
+		
+		public String long_name;
+		public String short_name;
+		public String[] types;
+	}
+}

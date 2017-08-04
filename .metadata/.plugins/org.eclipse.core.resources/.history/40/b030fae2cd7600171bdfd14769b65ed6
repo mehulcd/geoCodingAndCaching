@@ -1,0 +1,67 @@
+/**
+ * 
+ */
+package com.valbo.data.model;
+
+/**
+ * @author mdodia
+ *
+ */
+public class GoogleGeoCodeResponse {
+
+	public String status;
+	public results[] results;
+
+	public GoogleGeoCodeResponse() {
+	}
+
+	public static class results {
+		
+		public results () {
+		}
+		
+		public String formatted_address;
+		public geometry geometry;
+		public String[] types;
+		public address_component[] address_components;
+	}
+
+	public static class geometry {
+		
+		public geometry () {
+		}
+		
+		public bounds bounds;
+		public String location_type;
+		public location location;
+		public bounds viewport;
+	}
+
+	public static class bounds {
+
+		public bounds () {
+		}
+		
+		public location northeast;
+		public location southwest;
+	}
+
+	public static class location {
+		
+		public location () {
+		}
+		
+		public String lat;
+		public String lng;
+	}
+
+	public static class address_component {
+		
+		public address_component () {
+		}
+		
+		public String long_name;
+		public String short_name;
+		public String[] types;
+	}
+}

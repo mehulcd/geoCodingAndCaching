@@ -1,0 +1,27 @@
+# GeoCodingAPI
+
+This API exposes two endpoints - 1. To get the address information for a given set of co-ordinates 2. To retrieve the last 10 results from the local cache which is refreshed after every request. The service used to get the address information the Google Geo coding service which offers a free tier upto 1000 requests a day. 
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+Java Run time environment version 7 & above
+
+### Installing
+
+1. Open a command line tool
+2. Navigate to folder where the JAR is kept
+3. Execute command - "java -jar GeoCodingAPI-0.0.1-SNAPSHOT.jar"
+
+## Running the tests
+
+1. All Junit tests are automatically run when you build using Maven - pom.xml 
+
+## Authors
+
+Mehul Dodia
+
+

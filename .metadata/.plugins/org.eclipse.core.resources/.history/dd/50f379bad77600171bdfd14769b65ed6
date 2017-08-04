@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.valbo.data.model;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.valbo.data.model.Location;
+
+/**
+ * @author mdodia
+ *
+ */
+@Component
+public class AllRecordsMapper {
+	
+//	@Autowired
+//	private DynamoDBMapper dynamoDBMapper;
+//	
+//	@Autowired
+//	private RecordRepository recordRepository;
+//	
+//	public void insertData(Record record) {
+//
+//		//dynamoDBMapper.save(record);
+//		recordRepository.save(record);
+//
+//	}
+}

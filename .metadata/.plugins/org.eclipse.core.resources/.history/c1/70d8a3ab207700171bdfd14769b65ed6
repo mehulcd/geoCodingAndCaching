@@ -1,0 +1,11 @@
+server.port=8082
+#spring.thymeleaf.prefix=${project.base-dir}/src/main/resources/templates/
+spring.thymeleaf.cache=false
+# Static resources reloading during development
+#spring.resources.static-locations=${project.base-dir}/src/main/resources/static/
+spring.resources.cache-period=0
+spring.cache.ehcache.config=classpath:ehcache.xml
+
+google.geocode.key = AIzaSyAxg1W8AiU7X3SPeBx2329nWhfFGMY5VnU
+google.geocode.url = https://maps.googleapis.com/maps/api/geocode/json
+

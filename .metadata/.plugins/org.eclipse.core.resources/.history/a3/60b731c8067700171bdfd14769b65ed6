@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package com.ncr.location.config;
+
+/**
+ * @author mdodia
+ *
+ */
+public class LocationCacheManager extends net.sf.ehcache.CacheManager {
+
+
+		   public LocationCacheManager(){
+		      super();
+		   }
+
+		   /* Add your own cache methods here.
+		    * 
+		    * public void myCustomCacheMethod(){
+		    *    // your code here
+		    * }
+		    * */
+		}

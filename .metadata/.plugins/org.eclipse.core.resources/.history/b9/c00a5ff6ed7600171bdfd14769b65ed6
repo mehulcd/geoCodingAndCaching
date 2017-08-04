@@ -1,0 +1,15 @@
+/**
+ * 
+ */
+package com.ncr.location.repository;
+
+import com.ncr.location.model.GeoLocationResponse;
+
+/**
+ * @author mdodia
+ *
+ */
+public interface LocationRepository {
+	
+	void saveLocation (GeoLocationResponse location);
+}

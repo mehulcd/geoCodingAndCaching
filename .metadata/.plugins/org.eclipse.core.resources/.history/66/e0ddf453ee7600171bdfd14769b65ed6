@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package com.ncr.location.repository;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ncr.location.model.GeoLocationResponse;
+
+/**
+ * @author mdodia
+ *
+ */
+public class LocationRepositoryImpl implements LocationRepository {
+
+	/* (non-Javadoc)
+	 * @see com.ncr.location.repository.LocationRepository#saveLocation(com.ncr.location.model.GeoLocationResponse)
+	 */
+	@Override
+	public void saveLocation(GeoLocationResponse location) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private static final String KEY = "Location";
+ 
+ 
+//    @Autowired
+//    private LocationRepositoryImpl(RedisTemplate<String, GeoLocationResponse> redisTemplate) {
+//        this.redisTemplate = redisTemplate;
+//    }
+// 
+//    @PostConstruct
+//    private void init() {
+//        hashOps = redisTemplate.opsForHash();
+//    }
+//     
+//    public void saveStudent(GeoLocationResponse location) {
+//        hashOps.put(KEY, location.getLookUpTimeStamp(), location);
+//    }
+// 
+//    public void updateStudent(GeoLocationResponse student) {
+//        hashOps.put(KEY, location.getId(), student);
+//    }
+ 
+//    public Map<Object, Object> findAllLocations() {
+//        return hashOps.entries(KEY);
+//    }
+ 
+//    public void deleteLocation(Date date) {
+//        hashOps.delete(KEY, id);
+//    }
+
+}

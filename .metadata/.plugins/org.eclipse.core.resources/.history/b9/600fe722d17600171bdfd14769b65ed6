@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package com.valbo.data.service;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valbo.data.model.GoogleGeoCodeResponse;
+import com.valbo.data.model.Location;
+
+/**
+ * @author mdodia
+ *
+ */
+@Service
+public class AddressService {
+
+	@Value("${google.geocode.key}")
+	private String googleGeoCodeKey;
+
+	@Value("${google.geocode.url}")
+	private String googleGeoCodeURL;
+
+	public GoogleGeoCodeResponse getGEOCodedAddress(List<String> geoCodes) {
+
+		String geoCodeURI = geoCodes.get(0) + ","
+				+ geoCodes.get(1);
+		String uri = googleGeoCodeURL + "?" + "latlng=" + geoCodeURI + "&" + "key=" + googleGeoCodeKey;
+		return getGeoLocation (uri);
+	}
+
+	private GoogleGeoCodeResponse getGeoLocation (String url) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		GoogleGeoCodeResponse response = restTemplate.getForObject(url, GoogleGeoCodeResponse.class);
+		
+		return response;
+	}
+
+}

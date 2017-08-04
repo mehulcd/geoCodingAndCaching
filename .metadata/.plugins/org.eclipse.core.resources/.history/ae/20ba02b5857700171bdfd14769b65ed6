@@ -1,0 +1,5 @@
+package com.ncr.location.controller;
+
+public class LocationErrorController {
+
+}

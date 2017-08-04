@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package com.ncr.location.config;
+
+/**
+ * @author mdodia
+ *
+ */
+public class LocationCacheManager {
+
+}
